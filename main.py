@@ -10,6 +10,18 @@ fit_file = 'example.fit'
 
 def main():
     calculate_workout_duration(fit_file)
+    calculate_workout_distance(fit_file)
+
+
+def calculate_workout_distance(fit_file):
+    distance = 0    # length of travelled distance in meters
+
+    with fitdecode.FitReader(fit_file) as fit:
+        for frame in fit:
+            if isinstance(frame, fitdecode.FitDataMessage)  and frame.has_field('total_distance'):
+                distance = frame.get_field('total_distance').value
+
+        print("km: {:.2f}".format(distance/1000))
 
 
 def calculate_workout_duration(fit_file):
